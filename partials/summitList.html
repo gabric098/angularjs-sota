@@ -10,7 +10,7 @@
             <div class="control-group">
                 <label class="control-label" for="selectbasic">Association</label>
                 <div class="controls">
-                    <select ng-model="assSelect" ng-options="s.region.association.name for s in summitList | unique:'region.association.code'" id="selectbasic1" name="selectbasic" ng-change="update()" class="input-large">
+                        <select ng-model="assSelect" ng-options="a.name for a in associationList" id="selectbasic1" name="selectbasic" ng-change="associationChange()" class="input-large">
                         <option value="">-- choose association --</option>
                     </select>
                 </div>
@@ -20,7 +20,7 @@
             <div class="control-group">
                 <label class="control-label" for="selectbasic">Region</label>
                 <div class="controls">
-                    <select id="selectbasic" name="selectbasic" class="input-large" ng-disabled="assSelect==null" ng-model="regSelect" ng-options="s.region.name for s in summitList|exactAssCodeMatch:assSelect.region.association.code|unique:'region.code'">
+                    <select id="selectbasic" name="selectbasic" class="input-large" ng-disabled="assSelect==null" ng-model="regSelect" ng-change="regionChange()" ng-options="r.name for r in regionList|exactAssCodeMatch:assSelect.code">
                         <option value="">-- choose region --</option>
                     </select>
                 </div>
@@ -44,7 +44,7 @@
             </thead>
             <tbody>
 
-            <tr ng-repeat="summit in summitList|exactAssCodeMatch:assSelect.region.association.code|exactRegCodeMatch:regSelect.region.code">
+            <tr ng-repeat="summit in pagedItems[currentPage]">
                 <td>{{summit.region.association.code}}/{{summit.region.code}}-{{summit.code}}</td>
                 <td>{{summit.name}}</td>
                 <td>{{summit.height}}</td>
@@ -52,17 +52,13 @@
 
             </tbody>
         </table>
-        <!--div class="pagination">
+        <div ui-if="pagedItems.length > 0" class="pagination">
             <ul>
-                <li><a href="#">Prev</a></li>
-                <li><a href="#">1</a></li>
-                <li><a href="#">2</a></li>
-                <li><a href="#">3</a></li>
-                <li><a href="#">4</a></li>
-                <li><a href="#">5</a></li>
-                <li><a href="#">Next</a></li>
+                <li ng-class="{disabled: currentPage == 0}"><a href ng-click="prevPage()">Prev</a></li>
+                <li ng-class="{active: n == currentPage}" ng-repeat="n in range(currentPage, pagedItems.length)" ng-click="setPage()"><a href ng-bind="n + 1">{{(n+1)}}</a></li>
+                <li ng-class="{disabled: currentPage == pagedItems.length - 1}"><a href ng-click="nextPage()">Next</a></li>
             </ul>
-        </div-->
+        </div>
     </div>
 
 </div>

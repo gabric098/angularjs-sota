@@ -9,7 +9,7 @@ angular.module('sotaApp.filters', []).
                 return  input;
             var validList = [];
             for (var i=0; i<input.length; i++) {
-                if (input[i].region.association.code === valueToMatch) {
+                if (input[i].association.code === valueToMatch) {
                     validList.push(input[i]);
                 }
             }
@@ -26,6 +26,7 @@ angular.module('sotaApp.filters', []).
                 validList.push(input[i]);
             }
         }
+        console.log('exactRegCodeMatch returning:'+validList.length);
         return validList;
     };
 });
