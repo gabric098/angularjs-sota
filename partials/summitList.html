@@ -1,0 +1,76 @@
+<!-- Main hero unit for a primary marketing message or call to action -->
+<div class="hero-unit">
+    <form class="form-horizontal">
+        <fieldset>
+
+            <!-- Form Name -->
+            <legend>Summits filter</legend>
+
+            <!-- Select Basic -->
+            <div class="control-group">
+                <label class="control-label" for="selectbasic">Association</label>
+                <div class="controls">
+                    <select ng-model="assSelect" ng-options="s.region.association.name for s in summitList | unique:'region.association.code'" id="selectbasic1" name="selectbasic" ng-change="update()" class="input-large">
+                        <option value="">-- choose association --</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Select Basic -->
+            <div class="control-group">
+                <label class="control-label" for="selectbasic">Region</label>
+                <div class="controls">
+                    <select id="selectbasic" name="selectbasic" class="input-large" ng-disabled="assSelect==null" ng-model="regSelect" ng-options="s.region.name for s in summitList|exactAssCodeMatch:assSelect.region.association.code|unique:'region.code'">
+                        <option value="">-- choose region --</option>
+                    </select>
+                </div>
+            </div>
+
+        </fieldset>
+    </form>
+
+</div>
+
+<!-- Example row of columns -->
+<div class="row">
+    <div class="span12">
+        <table class="table table-striped table-bordered">
+            <thead>
+            <tr>
+                <th>Summit code</th>
+                <th>Name</th>
+                <th>Height</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            <tr ng-repeat="summit in summitList|exactAssCodeMatch:assSelect.region.association.code|exactRegCodeMatch:regSelect.region.code">
+                <td>{{summit.region.association.code}}/{{summit.region.code}}-{{summit.code}}</td>
+                <td>{{summit.name}}</td>
+                <td>{{summit.height}}</td>
+            </tr>
+
+            </tbody>
+        </table>
+        <!--div class="pagination">
+            <ul>
+                <li><a href="#">Prev</a></li>
+                <li><a href="#">1</a></li>
+                <li><a href="#">2</a></li>
+                <li><a href="#">3</a></li>
+                <li><a href="#">4</a></li>
+                <li><a href="#">5</a></li>
+                <li><a href="#">Next</a></li>
+            </ul>
+        </div-->
+    </div>
+
+</div>
+
+
+
+<hr>
+
+<footer>
+    <p>All summits data come from sota.co.uk</p>
+</footer>
