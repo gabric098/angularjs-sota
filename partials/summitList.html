@@ -1,34 +1,42 @@
 <!-- Main hero unit for a primary marketing message or call to action -->
 <div class="hero-unit">
-    <form class="form-horizontal">
+    <form id="searchForm" class="form-horizontal collapse in">
         <fieldset>
-
             <!-- Form Name -->
             <legend>Summits filter</legend>
 
-            <!-- Select Basic -->
+            <!-- Select Association -->
             <div class="control-group">
-                <label class="control-label" for="selectbasic">Association</label>
+                <label class="control-label" for="selectassociation">Association</label>
                 <div class="controls">
-                        <select ng-model="assSelect" ng-options="a.name for a in associationList" id="selectbasic1" name="selectbasic" ng-change="associationChange()" class="input-large">
+                        <select ng-model="assSelect" ng-options="a.name for a in associationList" id="selectassociation" name="selectassociation" ng-change="associationChange()" class="input-large">
                         <option value="">-- choose association --</option>
                     </select>
                 </div>
             </div>
 
-            <!-- Select Basic -->
+            <!-- Select Region -->
             <div class="control-group">
-                <label class="control-label" for="selectbasic">Region</label>
+                <label class="control-label" for="selectregion">Region</label>
                 <div class="controls">
-                    <select id="selectbasic" name="selectbasic" class="input-large" ng-disabled="assSelect==null" ng-model="regSelect" ng-change="regionChange()" ng-options="r.name for r in regionList|exactAssCodeMatch:assSelect.code">
+                    <select id="selectregion" name="selectbasicregion" class="input-large" ng-disabled="assSelect==null" ng-model="regSelect" ng-change="regionChange()" ng-options="r.name for r in regionList|exactAssCodeMatch:assSelect.code">
                         <option value="">-- choose region --</option>
                     </select>
                 </div>
             </div>
 
+            <!-- Name search text -->
+            <div class="control-group">
+                <label class="control-label" for="selectregion">Name Search</label>
+                <div class="controls">
+                    <input type="text" ng-model="textFilter" ng-change="textFilterChange()" class="input-large" ng-disabled="assSelect==null" placeholder="Type something…">
+                </div>
+            </div>
         </fieldset>
     </form>
-
+    <p>
+        <button id="toggleSearch"  ng-click="toggleSearch()" class="btn btn-mini" type="button">hide filters</button>
+    </p>
 </div>
 
 <!-- Example row of columns -->
@@ -37,9 +45,10 @@
         <table class="table table-striped table-bordered">
             <thead>
             <tr>
-                <th>Summit code</th>
-                <th>Name</th>
-                <th>Height</th>
+                <th ng-class="{sorting_asc: (sortField == 'code' && sortDir == 'asc'), sorting_desc: (sortField == 'code' && sortDir == 'desc'), sorting: (sortField != 'code')}"  ng-click="sortBy('code')">Summit code</th>
+                <th ng-class="{sorting_asc: (sortField == 'name' && sortDir == 'asc'), sorting_desc: (sortField == 'name' && sortDir == 'desc'), sorting: (sortField != 'name')}" ng-click="sortBy('name')">Name</th>
+                <th ng-class="{sorting_asc: (sortField == 'height' && sortDir == 'asc'), sorting_desc: (sortField == 'height' && sortDir == 'desc'), sorting: (sortField != 'height')}" ng-click="sortBy('height')">Height</th>
+                <th ng-class="{sorting_asc: (sortField == 'points' && sortDir == 'asc'), sorting_desc: (sortField == 'points' && sortDir == 'desc'), sorting: (sortField != 'points')}" ng-click="sortBy('points')">Points</th>
             </tr>
             </thead>
             <tbody>
@@ -47,7 +56,8 @@
             <tr ng-repeat="summit in pagedItems[currentPage]">
                 <td>{{summit.region.association.code}}/{{summit.region.code}}-{{summit.code}}</td>
                 <td>{{summit.name}}</td>
-                <td>{{summit.height}}</td>
+                <td>{{summit.height}}m</td>
+                <td>{{summit.points}}</td>
             </tr>
 
             </tbody>
